@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYOTA | Youth Opportunities</title>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon.192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon.512.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --kenya-black: #000000;
+            --kenya-red: #DE2910;
+            --kenya-green: #006600;
+            --white: #ffffff;
+            --cream: #f8f9f2;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            flex: 1;
+        }
+
+        /* ---------------- HEADER ---------------- */
+        .header {
+            text-align: center;
+            margin: 20px 0 30px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            padding: 10px 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            height: 55px;  
+            width: auto;
+            object-fit: contain;
+        }
+
+        .tagline {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        /* ---------------- LOADING POPUP ---------------- */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .loading-popup {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 102, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--kenya-green);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .loading-subtext {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* ---------------- MAIN CARD ---------------- */
+        .main-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Kenyan flag stripe */
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--kenya-black) 0%, var(--kenya-black) 33%, var(--kenya-red) 33%, var(--kenya-red) 66%, var(--kenya-green) 66%, var(--kenya-green) 100%);
+        }
+
+        .loan-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--kenya-green);
+            margin: 16px 0 8px;
+        }
+
+        .loan-subtext {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .feature {
+            background: rgba(0, 102, 0, 0.07);
+            border-radius: 12px;
+            padding: 16px 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .feature i {
+            color: var(--kenya-green);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        /* ---------------- CTA BUTTON ---------------- */
+        .cta-section {
+            margin: 28px 0;
+        }
+
+        .btn-apply {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, var(--kenya-black), var(--kenya-red), var(--kenya-green));
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-apply::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-apply:hover::before {
+            left: 100%;
+        }
+
+        .btn-apply:active {
+            transform: scale(0.98);
+        }
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ---------------- TRUST SECTION ---------------- */
+        .trust-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--kenya-black) 0%, var(--kenya-black) 33%, var(--kenya-red) 33%, var(--kenya-red) 66%, var(--kenya-green) 66%, var(--kenya-green) 100%);
+        }
+
+        .trust-title {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .trust-badges {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .trust-badge {
+            background: rgba(0, 102, 0, 0.07);
+            padding: 10px 8px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .trust-badge i {
+            color: var(--kenya-green);
+            font-size: 0.9rem;
+        }
+
+        .trust-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments for very narrow screens */
+        @media (max-width: 360px) {
+            .container {
+                padding: 16px 12px;
+            }
+            
+            .main-card {
+                padding: 20px 16px;
+            }
+            
+            .loan-amount {
+                font-size: 1.7rem;
+            }
+            
+            .features {
+                gap: 8px;
+            }
+            
+            .feature {
+                padding: 12px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .trust-badge {
+                font-size: 0.7rem;
+                padding: 8px 6px;
+            }
+            
+            .loading-popup {
+                max-width: 260px;
+                padding: 24px 20px;
+            }
+            
+            .loading-spinner {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .loading-text {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .loading-popup {
+                max-width: 240px;
+                padding: 20px 16px;
+            }
+            
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .loading-text {
+                font-size: 0.9rem;
+            }
+            
+            .loading-subtext {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo">
+                <img src="icons/logo.png" alt="NYOTA Logo" class="logo-img">
+            </div>
+            <p class="tagline">Kuza, Imarisha, Endeleza Vijana!</p>
+        </header>
+
+        <!-- LOADING POPUP OVERLAY -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-popup">
+                <div class="loading-spinner"></div>
+                <p class="loading-subtext">Please wait while we process your request...</p>
+            </div>
+        </div>
+
+        <!-- MAIN CARD -->
+        <div class="main-card">
+            <div class="loan-amount">Ksh. 1,000 - 50,000</div>
+            <p class="loan-subtext">Youth empowerment financing available nationwide</p>
+
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <span>Fast approval</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Paperless</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-user-check"></i>
+                    <span>Youth-focused</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <button class="btn-apply" id="applyButton">
+                <span class="btn-content">
+                    Apply Now <i class="fas fa-arrow-right"></i>
+                </span>
+            </button>
+        </div>
+
+        <!-- TRUST SECTION -->
+        <div class="trust-section">
+            <h3 class="trust-title">Your security is our priority</h3>
+
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>SSL Secured</span>
+                </div>
+
+                <div class="trust-badge">
+                    <i class="fas fa-certificate"></i>
+                    <span>Licensed Program</span>
+                </div>
+                
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Data Protected</span>
+                </div>
+                
+                <div class="trust-badge">
+                    <i class="fas fa-users"></i>
+                    <span>Trusted</span>
+                </div>
+            </div>
+
+            <p class="trust-note">Empowering thousands of Kenyan youth</p>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('applyButton').addEventListener('click', () => {
+            // Show loading popup
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'flex';
+            
+            // Simulate loading process
+            setTimeout(() => {
+                // Hide loading overlay before navigation
+                loadingOverlay.style.display = 'none';
+                // Navigate to next page
+                window.location.href = 'eligibility.html';
+            }, 2000);
+        });
+
+        // Hide loading overlay when page loads (in case user navigates back)
+        window.addEventListener('pageshow', function(event) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'none';
+            }
+        });
+
+        // Ensure loading overlay is hidden on initial page load
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
