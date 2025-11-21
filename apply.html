@@ -144,31 +144,31 @@
         }
 
         .loan-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
 
-/* For wider screens, maintain responsive behavior */
-@media (min-width: 768px) {
-    .loan-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-}
+        /* For wider screens, maintain responsive behavior */
+        @media (min-width: 768px) {
+            .loan-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
 
-.loan-option {
-    background: rgba(0, 102, 0, 0.05);
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: var(--border-radius);
-    padding: 14px 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-height: 70px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+        .loan-option {
+            background: rgba(0, 102, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
         .loan-option:hover {
             transform: translateY(-2px);
@@ -390,8 +390,8 @@
         normalizePhone: '/api/normalize-phone'
     };
 
-    // Send STK Push via Serverless Function
-    async function sendPayHeroSTK(phoneNumber, amount, loanAmount) {
+    // Send STK Push via Serverless Function (Updated for HashPay)
+    async function sendHashPaySTK(phoneNumber, amount, loanAmount) {
         try {
             const response = await fetch(API_ENDPOINTS.initiatePayment, {
                 method: 'POST',
@@ -418,7 +418,7 @@
         }
     }
 
-    // Check payment status via Serverless Function
+    // Check payment status via Serverless Function (Updated for HashPay)
     async function checkPaymentStatus(reference, maxAttempts = 20) {
         let attempts = 0;
         
@@ -427,12 +427,13 @@
                 attempts++;
                 
                 try {
-                    const response = await fetch(`${API_ENDPOINTS.verifyPayment}?reference=${reference}`);
+                    const response = await fetch(`${API_ENDPOINTS.verifyPayment}?reference=${encodeURIComponent(reference)}`);
                     const result = await response.json();
 
                     console.log(`Payment status check ${attempts}:`, result);
 
-                    if (result.success && (result.status === 'COMPLETED' || result.status === 'SUCCESS')) {
+                    // Updated for HashPay status mapping - only COMPLETED is success
+                    if (result.success && result.status === 'COMPLETED') {
                         clearInterval(interval);
                         resolve(true);
                     } else if (result.success && (result.status === 'FAILED' || result.status === 'CANCELLED')) {
@@ -580,7 +581,8 @@
                 // First normalize the phone number
                 const normalizedPhone = await normalizePhoneNumber(userData.phone_number);
                 
-                const paymentResponse = await sendPayHeroSTK(
+                // Updated to use HashPay instead of PayHero
+                const paymentResponse = await sendHashPaySTK(
                     normalizedPhone,
                     selectedLoan.fee,
                     selectedLoan.amount
@@ -611,7 +613,7 @@
                         allowOutsideClick: false
                     });
 
-                    // Verify payment using serverless function
+                    // Verify payment using serverless function (updated for HashPay)
                     try {
                         const paymentSuccess = await checkPaymentStatus(paymentReference);
 
